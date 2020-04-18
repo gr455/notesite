@@ -1,0 +1,25 @@
+<html>
+	{% extends 'main/header.html'%}
+	<body>
+
+	{% block content %}
+		<h2> Courses </h2>
+		<br>
+		<h4>Showing {{courses.count}} course(s)</h4>
+		<div class="row">
+			{% for course in courses %}
+				<a href  = "/{{course.course_code}}">
+					<div class="col s12 m6">
+					  <div class="card blue darken-1">
+						<div class="card-content white-text">
+						  <span class="card-title">{{course}}</span>
+						</div>
+					  </div>
+					</div>
+		  		</a>
+		  	{% endfor %}
+		  </div>
+
+  {% endblock %}
+	</body>
+</html>

@@ -1,0 +1,21 @@
+{% extends "main/header.html" %}
+
+{% block content %}
+<h2> Create a new note </h2>
+<br>
+	{% if err_msgs %}
+		{% for err in err_msgs %}
+			<p>{{err}}</p>
+		{% endfor %}
+	{% endif %}
+	<form method = 'POST' class="col s12" enctype="multipart/form-data">
+
+		{% csrf_token %}
+
+		{{new_form.as_p}}
+
+		<input type = "file" name = 'document'>
+
+		<p><button type = "submit" class = "waves-effect waves-light btn" style = "background-color: teal">Publish</button></p>
+	</form>
+{% endblock %}

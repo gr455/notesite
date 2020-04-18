@@ -1,0 +1,17 @@
+{% extends "main/header.html" %}
+
+{% block content %}
+	{% if err_msgs %}
+		{% for err in err_msgs %}
+			<p>{{err}}</p>
+		{% endfor %}
+	{% endif %}
+	<form method = 'POST' class="col s12">
+
+		{% csrf_token %}
+
+		{{create_form.as_p}}
+
+		<p><button type = "submit" class = "waves-effect waves-light btn" style = "background-color: teal">Sign Up</button></p>
+	</form>
+{% endblock %}

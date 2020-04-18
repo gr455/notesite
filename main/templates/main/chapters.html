@@ -1,0 +1,29 @@
+<html>
+	{% extends 'main/header.html'%}
+	<body>
+
+	{% block content %}
+		<h2>Chapters for {{course}}</h2>
+		<br>
+		{% if chapters.count %}
+		<h4>Showing {{chapters.count}} chapter(s)</h4>
+		{% else %}
+		<h4>Showing 1 chapter(s)</h4>
+		{% endif %}
+		<div class="row">
+			{% for chapter in chapters %}
+				<a href  = "/{{course}}/{{chapter.chapter_name}}">
+					<div class="col s12 m6">
+					  <div class="card blue darken-1">
+						<div class="card-content white-text">
+						  <span class="card-title">{{chapter}}</span>
+						</div>
+					  </div>
+					</div>
+		  		</a>
+		  	{% endfor %}
+		  </div>
+
+  {% endblock %}
+	</body>
+</html>
