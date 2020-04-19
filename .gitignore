@@ -3,3 +3,4 @@ venv/
 notes.txt
 staticfiles/
 website/settings.py
+media/*
