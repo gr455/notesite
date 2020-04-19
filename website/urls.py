@@ -26,7 +26,6 @@ from django.conf.urls.static import static
 
 urlpatterns = [
 	path('admin/', admin.site.urls),
-	path('', include('main.urls')),
     # url(r'^attachments/', include('attachments.urls', namespace='attachments'))
     path('tinymce/', include('tinymce.urls')),
 
@@ -34,3 +33,5 @@ urlpatterns = [
 
 urlpatterns += staticfiles_urlpatterns()
 urlpatterns += static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
+# urlpatterns += static(settings.STATIC_URL, document_root = settings.STATIC_ROOT)
+urlpatterns += path('', include('main.urls')), #it was finding in main.urls for media,so I added it to the end
