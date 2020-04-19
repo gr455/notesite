@@ -15,6 +15,9 @@
 		{{new_form.as_p}}
 
 		<input type = "file" name = 'document'>
+		{% if illegal_extension %}
+		<p style = "color: red;">Only 'png','jpg','jpeg','pdf','odf','docx','doc','ppt','txt' files less than 5Mb are supported</p>
+		{% endif %}
 
 		<p><button type = "submit" class = "waves-effect waves-light btn" style = "background-color: teal">Publish</button></p>
 	</form>

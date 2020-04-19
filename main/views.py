@@ -127,6 +127,9 @@ def open_document(request, var, var2, var3):
 
 def create(request):
 	err_msgs = None
+	permitted_extensions = ['png','jpg','jpeg','pdf','odf','docx','doc','ppt','txt']
+	illegal_file_extension = False
+
 	if not request.user.is_authenticated:
 		raise PermissionDenied
 
@@ -138,14 +141,18 @@ def create(request):
 		
 		request_file = request.FILES['document'] if 'document' in request.FILES else None
 		if request_file:
-			fs = FileSystemStorage()
-			file = fs.save(request_file.name, request_file)
-			fileurl = fs.url(file)
-			print(fileurl)
+			if request_file.name.split('.')[-1] in permitted_extensions and request_file.size <= 5242880:
 
-			note.note_fileurl = fileurl
+				fs = FileSystemStorage()
+				file = fs.save(request_file.name, request_file)
+				fileurl = fs.url(file)
+				print(fileurl)
 
-		if data.is_valid():
+				note.note_fileurl = fileurl
+			else:
+				illegal_file_extension = True
+
+		if data.is_valid() and not illegal_file_extension:
 			note.save()
 			redirect("/")
 		
@@ -159,4 +166,5 @@ def create(request):
 		          template_name = "main/new.html",
 		          context = {"new_form": new_form,
 		          			 "logged_in": logged_in,
-		          			 "err_msgs": err_msgs})
+		          			 "err_msgs": err_msgs,
+		          			 "illegal_extension": illegal_file_extension})
