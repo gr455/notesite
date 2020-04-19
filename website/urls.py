@@ -20,10 +20,17 @@ This is the uppermost level of the apps, here we specify when to load which apps
 '''
 from django.contrib import admin
 from django.urls import path, include
+from django.contrib.staticfiles.urls import staticfiles_urlpatterns
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
 	path('admin/', admin.site.urls),
 	path('', include('main.urls')),
     # url(r'^attachments/', include('attachments.urls', namespace='attachments'))
     path('tinymce/', include('tinymce.urls')),
+
 ]
+
+urlpatterns += staticfiles_urlpatterns()
+urlpatterns += static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)

@@ -1,0 +1,15 @@
+<html>
+	{% extends 'main/header.html'%}
+	<body>
+
+	{% block content %}
+	<h2>Note</h2>
+		<p class="flow-text"><b>Course: </b>{{course}}</p>
+		<p class="flow-text"><b>Chapter: </b> {{chapter.chapter_name}}</p>
+		<p class="flow-text"><b>Author: </b><a href ="/users/{{note.note_author}}">{{note.note_author}}</a></p>
+		<br>
+		<p class="flow-text"><b>Summary: </b>{{note.note_summary}}</p>
+		<p class="flow-text"><b>Notes: </b> <a href= "{{note.note_fileurl}}"> Click here</a> </p>
+  {% endblock %}
+	</body>
+</html>

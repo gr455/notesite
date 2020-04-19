@@ -26,10 +26,10 @@
 		{% else %}
 			<nav class = "grey lighten-5">
 				<div class="nav-wrapper">
-					<a href="/" class="brand-logo black-text">*name here*</a>
+					<a href="/" class="brand-logo black-text">Notesite</a>
 					<ul id="nav-mobile" class="right hide-on-med-and-down">
 						<!-- TODO: redirect to profile when clicked on name -->
-						<li><a class="black-text" href="/">{{request.user}}</a></li>
+						<li><a class="black-text" href="/users/{{request.user}}">{{request.user}}</a></li>
 						<li><a class="black-text" href="/create">Create</a></li> 
 						<li><a class="black-text" href="/">Home</a></li>
 						<li><a class="black-text" href="/logout">Logout</a></li>
@@ -43,28 +43,31 @@
 			{% block content %}
 			{% endblock %}
 		</div>
+		<br><br><br><br><br><br><br><br><br><br><br><br>
+
 
 		 <footer class="page-footer grey darken-4">
           <div class="container">
             <div class="row">
               <div class="col l6 s12">
-                <h5 class="white-text">*name here*</h5>
-                <p class="grey-text text-lighten-4">You can use rows and columns here to organize your footer content.</p>
+                <h5 class="white-text">Notesite</h5>
+                <p class="grey-text text-lighten-4">IIIT Bangalore, 26/C, Hosur Rd, Electronics City Phase 1, Electronic City, Bengaluru, Karnataka 560100</p>
               </div>
               <div class="col l4 offset-l2 s12">
-                <h5 class="white-text">Links</h5>
-                <ul>
+                <h5 class="white-text">A Zense Product</h5>
+                <img src = "{% static 'icons/zense_logo.jpg' %}" width = "400" height="140" >
+                <!-- <ul>
                   <li><a class="grey-text text-lighten-3" href="#!">Link 1</a></li>
                   <li><a class="grey-text text-lighten-3" href="#!">Link 2</a></li>
                   <li><a class="grey-text text-lighten-3" href="#!">Link 3</a></li>
                   <li><a class="grey-text text-lighten-3" href="#!">Link 4</a></li>
-                </ul>
+                </ul> -->
               </div>
             </div>
           </div>
           <div class="footer-copyright">
             <div class="container">
-            © 2014 Copyright Text
+            © 2020 Copyright Notesite
             <a class="grey-text text-lighten-4 right" href="#!">More Links</a>
             </div>
           </div>

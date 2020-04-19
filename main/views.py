@@ -98,7 +98,7 @@ def indirect_path(request, var, var2):
 		logged_in = True
 	course = get_object_or_404(Course, course_code = var)
 	chapter = get_object_or_404(Chapter, chapter_course = course, chapter_name = var2)
-	notes = get_list_or_404(Note, note_chapter = chapter)
+	notes = Note.objects.filter(note_chapter = chapter)
 
 	return render(request = request,
 				  template_name = "main/notes.html",
@@ -122,6 +122,8 @@ def show(request, var, var2, var3):
 				  			 "note": note,
 				  			 "logged_in": logged_in})
 
+def open_document(request, var, var2, var3):
+	return HttpResponse(200)
 
 def create(request):
 	err_msgs = None
