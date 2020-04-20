@@ -7,7 +7,7 @@
 
 
 		<!-- Compiled and minified JavaScript -->
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.8/js/materialize.js"></script>
 			
 	</head>
 
@@ -21,11 +21,6 @@
 						<li><a class="black-text" href="/register">Register</a></li>
 						<li><a class="black-text" href="/">Home</a></li>
 					</ul>
-					<ul class="side-nav" id="mobile-demo">
-						<li><a class="black-text" href="/login">Login</a></li>
-						<li><a class="black-text" href="/register">Register</a></li>
-						<li><a class="black-text" href="/">Home</a></li>
-					</ul>
 				</div>
 			</nav>
 		{% else %}
@@ -34,12 +29,6 @@
 					<a href="/" class="brand-logo black-text">Notesite</a>
 					<ul id="nav-mobile" class="right hide-on-med-and-down">
 						<!-- TODO: redirect to profile when clicked on name -->
-						<li><a class="black-text" href="/users/{{request.user}}">{{request.user}}</a></li>
-						<li><a class="black-text" href="/create">Create</a></li> 
-						<li><a class="black-text" href="/">Home</a></li>
-						<li><a class="black-text" href="/logout">Logout</a></li>
-					</ul>
-					<ul class="side-nav" id="mobile-demo">
 						<li><a class="black-text" href="/users/{{request.user}}">{{request.user}}</a></li>
 						<li><a class="black-text" href="/create">Create</a></li> 
 						<li><a class="black-text" href="/">Home</a></li>
