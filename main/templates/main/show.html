@@ -10,6 +10,13 @@
 		<br>
 		<p class="flow-text"><b>Summary: </b>{{note.note_summary}}</p>
 		<p class="flow-text"><b>Notes: </b> <a href= "{{note.note_fileurl}}"> Click here</a> </p>
+		<br>
+		{% if note.note_author == request.user.username %}
+		<form method = 'POST' action = '.' class="col s12">
+			{% csrf_token %}
+			<p><button  onclick="return confirm('Are you sure you want to delete this note? You will not be able to recover the note again.')" type = "submit" class = "waves-effect waves-light btn" style = "background-color: red">Delete</button></p>
+		</form>
+		{% endif %}
   {% endblock %}
 	</body>
 </html>

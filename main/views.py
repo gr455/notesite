@@ -8,6 +8,8 @@ from .forms import *
 from django.shortcuts import get_object_or_404, get_list_or_404
 from django.core.exceptions import PermissionDenied
 from django.core.files.storage import FileSystemStorage
+from django.conf import settings
+import os
 
 
 def homepage(request):
@@ -115,6 +117,16 @@ def show(request, var, var2, var3):
 	course = get_object_or_404(Course, course_code = var)
 	chapter = get_object_or_404(Chapter, chapter_course = course, chapter_name = var2)
 	note = get_object_or_404(Note, note_chapter = chapter, id = var3)
+	if request.method == 'POST':
+		if not request.user.username == note.note_author:
+			return PermissionDenied
+		else:
+			if os.path.isfile(os.path.join(settings.MEDIA_ROOT, note.note_fileurl.split('/')[-1])):
+				os.remove(os.path.join(settings.MEDIA_ROOT, note.note_fileurl.split('/')[-1]))
+			note.delete()
+			return redirect("/")
+
+
 	return render(request = request,
 				  template_name = "main/show.html",
 				  context = {"course": course,
