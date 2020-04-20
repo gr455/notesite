@@ -168,3 +168,23 @@ def create(request):
 		          			 "logged_in": logged_in,
 		          			 "err_msgs": err_msgs,
 		          			 "illegal_extension": illegal_file_extension})
+
+def view_user(request, uname):
+	if not request.user.is_authenticated:
+		raise PermissionDenied
+
+	query_user = get_object_or_404(User, username = uname) 
+
+	curr_user = request.user
+	user_is_authenticated = False
+	if curr_user.username == uname:
+		user_is_authenticated = True
+
+	user_notes = Note.objects.filter(note_author = uname)
+
+	return render(request = request,
+				  template_name = "main/user.html",
+				  context = {"logged_in": True,
+				  			 "query_user": query_user,
+				  			 "curr_user_is_auth": user_is_authenticated,
+				  			 "notes": user_notes})

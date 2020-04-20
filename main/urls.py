@@ -25,6 +25,10 @@ urlpatterns = [
 	path("logout/", views.logout_user, name = "logout"),
 	path("login/", views.login_user, name = "login"),
     path("create/", views.create, name = "create"),
+    path("users/", include([
+            path("<uname>/", views.view_user, name = "user")
+
+        ])),
     path('<var>/', include([
 
         path("", views.direct_path, name = "path"),

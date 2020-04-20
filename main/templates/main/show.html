@@ -3,7 +3,7 @@
 	<body>
 
 	{% block content %}
-	<h2>Note</h2>
+	<h2>{{note.note_title}}</h2>
 		<p class="flow-text"><b>Course: </b>{{course}}</p>
 		<p class="flow-text"><b>Chapter: </b> {{chapter.chapter_name}}</p>
 		<p class="flow-text"><b>Author: </b><a href ="/users/{{note.note_author}}">{{note.note_author}}</a></p>

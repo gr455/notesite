@@ -1,0 +1,36 @@
+<html>
+	{% extends 'main/header.html'%}
+	<body>
+
+	{% block content %}
+
+	{% if query_user == request.user %}
+	<h2>Profile of {{query_user}} (You)</h2>
+	{% else %}
+	<h2>Profile of {{query_user}}</h2>
+	{% endif %}
+	<br>
+		<p class="flow-text"><b>First Name: </b>{{query_user.first_name}}</p>
+		<p class="flow-text"><b>Last Name: </b> {{query_user.last_name}}</p>
+		<p class="flow-text"><b>Email: </b>{{query_user.email}}</p>
+		<br>
+		<p class="flow-text"><b>Notes Contributed: </b>{{notes.count}}</p>
+
+		<div class="row">
+			{% for note in notes %}
+				<a href  = "/{{note.note_chapter.chapter_course.course_code}}/{{note.note_chapter.chapter_name}}/{{note.id}}">
+					<div class="col s12 m6">
+					  <div class="card blue darken-1">
+						<div class="card-content white-text">
+						  <span class="card-title">{{note.note_title}}</span>
+						  <p> {{note.note_chapter.chapter_course}} : {{note.note_chapter.chapter_name}}</p>
+						</div>
+					  </div>
+					</div>
+		  		</a>
+		  	{% endfor %}
+		  </div>
+
+  {% endblock %}
+	</body>
+</html>
