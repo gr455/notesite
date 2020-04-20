@@ -21,6 +21,11 @@
 						<li><a class="black-text" href="/register">Register</a></li>
 						<li><a class="black-text" href="/">Home</a></li>
 					</ul>
+					<ul class="side-nav" id="mobile-demo">
+						<li><a class="black-text" href="/login">Login</a></li>
+						<li><a class="black-text" href="/register">Register</a></li>
+						<li><a class="black-text" href="/">Home</a></li>
+					</ul>
 				</div>
 			</nav>
 		{% else %}
@@ -29,6 +34,12 @@
 					<a href="/" class="brand-logo black-text">Notesite</a>
 					<ul id="nav-mobile" class="right hide-on-med-and-down">
 						<!-- TODO: redirect to profile when clicked on name -->
+						<li><a class="black-text" href="/users/{{request.user}}">{{request.user}}</a></li>
+						<li><a class="black-text" href="/create">Create</a></li> 
+						<li><a class="black-text" href="/">Home</a></li>
+						<li><a class="black-text" href="/logout">Logout</a></li>
+					</ul>
+					<ul class="side-nav" id="mobile-demo">
 						<li><a class="black-text" href="/users/{{request.user}}">{{request.user}}</a></li>
 						<li><a class="black-text" href="/create">Create</a></li> 
 						<li><a class="black-text" href="/">Home</a></li>
@@ -47,30 +58,30 @@
 
 
 		 <footer class="page-footer grey darken-4">
-          <div class="container">
-            <div class="row">
-              <div class="col l6 s12">
-                <h5 class="white-text">Notesite</h5>
-                <p class="grey-text text-lighten-4">IIIT Bangalore, 26/C, Hosur Rd, Electronics City Phase 1, Electronic City, Bengaluru, Karnataka 560100</p>
-              </div>
-              <div class="col l4 offset-l2 s12">
-                <h5 class="white-text">A Zense Product</h5>
-                <img src = "{% static 'icons/zense_logo.jpg' %}" width = "400" height="140" >
-                <!-- <ul>
-                  <li><a class="grey-text text-lighten-3" href="#!">Link 1</a></li>
-                  <li><a class="grey-text text-lighten-3" href="#!">Link 2</a></li>
-                  <li><a class="grey-text text-lighten-3" href="#!">Link 3</a></li>
-                  <li><a class="grey-text text-lighten-3" href="#!">Link 4</a></li>
-                </ul> -->
-              </div>
-            </div>
-          </div>
-          <div class="footer-copyright">
-            <div class="container">
-            © 2020 Copyright Notesite
-            <a class="grey-text text-lighten-4 right" href="#!">More Links</a>
-            </div>
-          </div>
-        </footer>
-        
+		  <div class="container">
+			<div class="row">
+			  <div class="col l6 s12">
+				<h5 class="white-text">Notesite</h5>
+				<p class="grey-text text-lighten-4">IIIT Bangalore, 26/C, Hosur Rd, Electronics City Phase 1, Electronic City, Bengaluru, Karnataka 560100</p>
+			  </div>
+			  <div class="col l4 offset-l2 s12">
+				<h5 class="white-text">A Zense Product</h5>
+				<img src = "{% static 'icons/zense_logo.jpg' %}" width = "400" height="170" >
+				<!-- <ul>
+				  <li><a class="grey-text text-lighten-3" href="#!">Link 1</a></li>
+				  <li><a class="grey-text text-lighten-3" href="#!">Link 2</a></li>
+				  <li><a class="grey-text text-lighten-3" href="#!">Link 3</a></li>
+				  <li><a class="grey-text text-lighten-3" href="#!">Link 4</a></li>
+				</ul> -->
+			  </div>
+			</div>
+		  </div>
+		  <div class="footer-copyright">
+			<div class="container">
+			© 2020 Copyright Notesite
+			<a class="grey-text text-lighten-4 right" href="#!">More Links</a>
+			</div>
+		  </div>
+		</footer>
+		
 	</body>
