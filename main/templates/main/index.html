@@ -10,7 +10,7 @@
 			{% for course in courses %}
 				<a href  = "/{{course.course_code}}">
 					<div class="col s12 m6">
-					  <div class="card blue darken-1">
+					  <div class="card teal darken-1">
 						<div class="card-content white-text">
 						  <span class="card-title">{{course}}</span>
 						</div>
@@ -19,6 +19,31 @@
 		  		</a>
 		  	{% endfor %}
 		  </div>
+		  <br><br>
+		  <h4>Recent Notes</h4>
+		  <div class="row">
+			<div class="row">
+			{% for note in notes %}
+				<a href  = "/{{note.note_chapter.chapter_course.course_code}}/{{note.note_chapter.chapter_name}}/{{note.id}}">
+					<div class="col s12 m6">
+					  <div class="card blue darken-1">
+						<div class="card-content white-text">
+						  <span class="card-title" style = "overflow: hidden; display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical;">{{note.note_title}}</span>
+						  <p> {{note.note_chapter.chapter_course}} : {{note.note_chapter.chapter_name}}</p>
+						</div>
+						<div class="card-content white-text" stye = "color: white;">
+							<a style = "color: white;" href="/users/{{note.note_author}}">
+								by {{note.note_author}}
+							</a>
+							<br><br>
+							<p>Published on {{note.note_whenPublished}}</p>
+						</div>
+					  </div>
+					</div>
+		  		</a>
+		  	{% endfor %}
+		  </div>
+		</div>
 
   {% endblock %}
 	</body>

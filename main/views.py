@@ -19,7 +19,7 @@ def homepage(request):
 
 	if request.user.is_authenticated:
 		logged_in = True
-	params = {"notes": Note.objects.all,
+	params = {"notes": Note.objects.order_by('-note_whenPublished')[:6],
 			  "tutorials": Tutorial.objects.all,
 			  "chapters": Chapter.objects.all,
 			  "courses": Course.objects.all,
