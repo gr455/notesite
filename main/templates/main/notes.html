@@ -13,20 +13,26 @@
 		<div class="row">
 			{% for note in notes %}
 			<a href = "{{note.id}}">
-   			<div class="col s12 m6">
-      			<div class="card blue darken-1">
-       				<div class="card-content white-text">
-          				<span class="card-title">{{note.note_title}}</span>
-          				<p>{{note.note_summary}}</p>
-        			</div>
-        			<div class="card-content white-text" stye = "color: white;">
-          				<a style = "color: white;" href="#">by {{note.note_author}}</a>
-        			</div>
-      			</div>
-    		</div>
-    		{% endfor %}
-  		</div>
-
+			<div class="col s12 m6">
+				<div class="card blue darken-1">
+					<div class="card-content white-text">
+						<span class="card-title">{{note.note_title}}</span>
+						<p id = "note_summary" style = "overflow: hidden;
+  														display: -webkit-box;
+  														-webkit-line-clamp: 3;
+  														-webkit-box-orient: vertical;">
+ 						{{note.note_summary}}
+ 					</p>
+					</div>
+					<div class="card-content white-text" stye = "color: white;">
+						<a style = "color: white;" href="#">
+							by {{note.note_author}}
+						</a>
+					</div>
+				</div>
+			</div>
+			{% endfor %}
+		</div>
   {% endblock %}
 	</body>
 </html>

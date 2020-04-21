@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from .models import *
 from django.contrib.auth.forms import AuthenticationForm
+from django import forms
 from django.contrib.auth import login, logout, authenticate
 from django.contrib import messages
 from .forms import *
@@ -39,9 +40,14 @@ def register(request):
 	if request.method == "POST":
 		info = NewUserForm(request.POST)
 		if info.is_valid():
-			user = info.save()
-			login(request, user)
-			return redirect("/")
+			email = info.cleaned_data.get('email')
+			if User.objects.filter(email = email).exists():
+				info.add_error('email', 'account with email already exists')
+				err_msgs = info.errors.items
+			else:
+				user = info.save()
+				login(request, user)
+				return redirect("/")
 		else:
 			err_msgs = info.errors.items
 
