@@ -1,13 +1,12 @@
 	<head>
 		{% load static %}
+		<script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
 		<link href = "{% static 'thirdparty/materialize/css/materialize.css' %}" rel = "stylesheet">
 		<link href = "{% static 'style.css' %}" rel = "stylesheet">
-		<script src = "{% static 'thirdparty/materialize/js/materialize.js' %}"></script>
-		 <!-- Compiled and minified CSS -->
 
 
 		<!-- Compiled and minified JavaScript -->
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.8/js/materialize.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/js/materialize.min.js"></script>
 			
 	</head>
 
@@ -38,6 +37,11 @@
 			</nav>
 
 		{% endif %}
+		{% if messages %}
+        	{% for message in messages %}
+          		<script>M.toast({html: "{{message}}", classes: 'blue rounded', displayLength:2000});</script>
+        	{% endfor %}
+   		{% endif %}
 		<div class = "container">
 			<br><br>
 			{% block content %}

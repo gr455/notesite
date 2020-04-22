@@ -4,8 +4,8 @@ from .models import *
 from django.contrib.auth.forms import AuthenticationForm
 from django import forms
 from django.contrib.auth import login, logout, authenticate
-from django.contrib import messages
 from .forms import *
+from django.contrib import messages
 from django.shortcuts import get_object_or_404, get_list_or_404
 from django.core.exceptions import PermissionDenied
 from django.core.files.storage import FileSystemStorage
@@ -46,6 +46,7 @@ def register(request):
 				err_msgs = info.errors.items
 			else:
 				user = info.save()
+				messages.success(request, f"New account created")
 				login(request, user)
 				return redirect("/")
 		else:
@@ -68,6 +69,7 @@ def login_user(request):
 			password = info.cleaned_data.get('password')
 			user = authenticate(username = username, password = password)
 			if user:
+				messages.success(request, f"Logged in")
 				login(request, user)
 				return redirect("/")
 
@@ -156,6 +158,7 @@ def create(request):
 		data = NoteForm(request.POST)
 		note = data.save(commit = False)
 		note.note_author = request.user
+		chapter = data.cleaned_data.get('note_chapter')
 		
 		request_file = request.FILES['document'] if 'document' in request.FILES else None
 		if request_file:
@@ -164,7 +167,6 @@ def create(request):
 				fs = FileSystemStorage()
 				file = fs.save(request_file.name, request_file)
 				fileurl = fs.url(file)
-				print(fileurl)
 
 				note.note_fileurl = fileurl
 			else:
@@ -172,7 +174,8 @@ def create(request):
 
 		if data.is_valid() and not illegal_file_extension:
 			note.save()
-			redirect("/")
+			messages.success(request, f"Note published")
+			return redirect(f"/{chapter.chapter_course.course_code}/{chapter.chapter_name}/{note.id}")
 		
 		#todo notification about publishing
 		else:
