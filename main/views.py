@@ -132,6 +132,7 @@ def show(request, var, var2, var3):
 			if os.path.isfile(os.path.join(settings.MEDIA_ROOT, note.note_fileurl.split('/')[-1])):
 				os.remove(os.path.join(settings.MEDIA_ROOT, note.note_fileurl.split('/')[-1]))
 			note.delete()
+			messages.success(request, f"Note Deleted")
 			return redirect("/")
 
 
