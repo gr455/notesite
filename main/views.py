@@ -141,6 +141,7 @@ def show(request, var, var2, var3):
 				  context = {"course": course,
 				  			 "chapter": chapter,
 				  			 "note": note,
+				  			 "file_type": note.note_fileurl.split('.')[-1],
 				  			 "logged_in": logged_in})
 
 def open_document(request, var, var2, var3):

@@ -9,7 +9,10 @@
 		<p class="flow-text" style = "width: 50%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"><b>Author: </b><a href ="/users/{{note.note_author}}">{{note.note_author}}</a></p>
 		<br>
 		<p class="flow-text"><b>Summary: </b>{{note.note_summary}}</p>
-		<p class="flow-text"><b>Notes: </b> <a href= "{{note.note_fileurl}}"> Click here</a> </p>
+		<p class="flow-text"><b>Published on: </b>{{note.note_whenPublished}}</p>
+		{% if file_type %}
+		<p class="flow-text"><b>Notes: </b> <a href= "{{note.note_fileurl}}"> Download (.{{file_type}})</a> </p>
+		{% endif %}
 		<br>
 		{% if note.note_author == request.user.username %}
 		<form method = 'POST' action = '.' class="col s12">

@@ -4,9 +4,11 @@
 <h2> Create a new note </h2>
 <br>
 	{% if err_msgs %}
-		{% for err in err_msgs %}
+		<div style = "color: red;">
+		{% for ele,err in err_msgs %}
 			<p>{{err}}</p>
 		{% endfor %}
+		</div>
 	{% endif %}
 	<form method = 'POST' class="col s12" enctype="multipart/form-data">
 

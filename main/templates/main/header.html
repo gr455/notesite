@@ -42,7 +42,6 @@
 					<a href="/" class="brand-logo black-text">Notesite</a>
 					<a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons" style = "color: black;">menu</i></a>
 					<ul id="nav-mobile" class="right hide-on-med-and-down" >
-						<!-- TODO: redirect to profile when clicked on name -->
 						<li><a class="black-text" href="/users/{{request.user}}">{{request.user}}</a></li>
 						<li><a class="black-text" href="/create">Create</a></li> 
 						<li><a class="black-text" href="/">Home</a></li>
@@ -67,7 +66,7 @@
 
 		<main class = "main" style = "flex: 1 0 auto;">
 			<div class = "container" style="margin-top: 5%">
-				<br><br>
+				<br>
 				{% block content %}
 				{% endblock %}
 			</div>
