@@ -1,20 +1,29 @@
+<html>
 	<head>
 		{% load static %}
 		<script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
 		<link href = "{% static 'thirdparty/materialize/css/materialize.css' %}" rel = "stylesheet">
 		<link href = "{% static 'style.css' %}" rel = "stylesheet">
+		<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
 
 		<!-- Compiled and minified JavaScript -->
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/js/materialize.min.js"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js">
+			$(document).ready(function(){
+    			$('.sidenav').sideNav();
+  			})
+		</script>
 			
 	</head>
 
-	<body>
+	<body class = "body" style = "display: flex; min-height: 100vh; flex-direction: column;">
+		<div class="navbar-fixed">
 		{% if not logged_in %}
-			<nav class = "grey lighten-5">
+			<nav class = "grey lighten-5" style = "position: fixed; z-index:999;">
 				<div class="nav-wrapper">
 					<a href="/" class="brand-logo black-text">Notesite</a>
+					<a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons" style = "color: black;">menu</i></a>
 					<ul id="nav-mobile" class="right hide-on-med-and-down">
 						<li><a class="black-text" href="/login">Login</a></li>
 						<li><a class="black-text" href="/register">Register</a></li>
@@ -22,10 +31,16 @@
 					</ul>
 				</div>
 			</nav>
+			<ul class="sidenav" id="mobile-demo">
+			    <li><a class="black-text" href="/login">Login</a></li>
+				<li><a class="black-text" href="/register">Register</a></li>
+				<li><a class="black-text" href="/">Home</a></li>
+			</ul>
 		{% else %}
 			<nav class = "grey lighten-5">
 				<div class="nav-wrapper">
 					<a href="/" class="brand-logo black-text">Notesite</a>
+					<a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons" style = "color: black;">menu</i></a>
 					<ul id="nav-mobile" class="right hide-on-med-and-down" >
 						<!-- TODO: redirect to profile when clicked on name -->
 						<li><a class="black-text" href="/users/{{request.user}}">{{request.user}}</a></li>
@@ -35,18 +50,29 @@
 					</ul>
 				</div>
 			</nav>
+			<ul class="sidenav" id="mobile-demo">
+			    <li><a class="black-text" href="/users/{{request.user}}">{{request.user}}</a></li>
+				<li><a class="black-text" href="/create">Create</a></li> 
+				<li><a class="black-text" href="/">Home</a></li>
+				<li><a class="black-text" href="/logout">Logout</a></li>
+			</ul>
+		</div>
 
 		{% endif %}
 		{% if messages %}
-        	{% for message in messages %}
-          		<script>M.toast({html: "{{message}}", classes: 'blue rounded', displayLength:2000});</script>
-        	{% endfor %}
-   		{% endif %}
-		<div class = "container">
-			<br><br>
-			{% block content %}
-			{% endblock %}
-		</div>
+			{% for message in messages %}
+				<script>M.toast({html: "{{message}}", classes: 'blue rounded', displayLength:2000});</script>
+			{% endfor %}
+		{% endif %}
+
+		<main class = "main" style = "flex: 1 0 auto;">
+			<div class = "container" style="margin-top: 5%">
+				<br><br>
+				{% block content %}
+				{% endblock %}
+			</div>
+		</main>
+
 		<br><br><br><br><br><br><br><br><br><br><br><br>
 
 
@@ -76,5 +102,11 @@
 			</div>
 		  </div>
 		</footer>
+		<script  src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.4.1.min.js">
+			$(document).ready(function(){
+				$('.sidenav').sidenav();
+			});
+		</script>
 		
 	</body>
+</html>
