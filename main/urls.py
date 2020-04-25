@@ -21,7 +21,9 @@ app_name  = "main"
 
 urlpatterns = [
 	path("", views.homepage, name = "homepage"),
+    path("preconfirm/", views.preconfirm, name = "preconfirm"),
 	path("register/", views.register, name = "register"),
+    path('users/validate/<username>/<token>', views.activate_user, name='user-activation'),
 	path("logout/", views.logout_user, name = "logout"),
 	path("login/", views.login_user, name = "login"),
     path("create/", views.create, name = "create"),

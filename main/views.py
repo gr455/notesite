@@ -5,10 +5,15 @@ from django.contrib.auth.forms import AuthenticationForm
 from django import forms
 from django.contrib.auth import login, logout, authenticate
 from .forms import *
+import hashlib 
 from django.contrib import messages
 from django.shortcuts import get_object_or_404, get_list_or_404
 from django.core.exceptions import PermissionDenied
 from django.core.files.storage import FileSystemStorage
+from django.core.mail import send_mail
+from django.contrib.auth.tokens import default_token_generator
+from django.utils.http import urlsafe_base64_encode
+from django.utils.encoding import force_bytes
 from django.conf import settings
 import os
 
@@ -46,9 +51,14 @@ def register(request):
 				err_msgs = info.errors.items
 			else:
 				user = info.save()
-				messages.success(request, f"New account created")
-				login(request, user)
-				return redirect("/")
+				user.is_active = False
+				user.save()
+				hashed = make_hash(user)
+				send_mail("Notesite sign up confirmation",
+				 		   f"Thank you {user.first_name} for registering with Notesite as {user.username}. Please click on the link below to activate your account \n\n {request.META['HTTP_HOST']}/users/validate/{user.username}/{hashed}",
+				 		   settings.EMAIL_HOST_USER,
+				 		   [user.email,])
+				return redirect("/preconfirm")
 		else:
 			err_msgs = info.errors.items
 
@@ -57,6 +67,33 @@ def register(request):
 				  template_name = "main/register.html",
 				  context = {"create_form": create_form,
 				  			 "err_msgs": err_msgs})
+
+#TODO: not be lazy and make a proper digest
+def make_hash(user):
+	hash =  hashlib.sha256(str.encode(user.username+user.password)).hexdigest()
+	return hash
+
+def activate_user(request, username, token):
+	user = get_object_or_404(User, username = username)
+	valid_token = make_hash(user)
+
+	if not user.is_active and valid_token == token:
+		user.is_active = True
+		user.save()
+		messages.success(request, f"User confirmation successful. Please login to proceed")
+		return redirect('/login')
+	else:
+		return HttpResponse("The link is incorrect or the user is already validated")
+
+def preconfirm(request):
+
+	if request.user.is_active:
+		messages.success(request, f"Account already activated")
+		return redirect('/')
+
+	return render(request = request,
+				  template_name = "main/preconfirm.html",
+				  context = {"logged_in": False})
 
 def login_user(request):
 	if request.user.is_authenticated:
@@ -68,7 +105,7 @@ def login_user(request):
 			username = info.cleaned_data.get('username')
 			password = info.cleaned_data.get('password')
 			user = authenticate(username = username, password = password)
-			if user:
+			if user and user.is_active:
 				messages.success(request, f"Logged in")
 				login(request, user)
 				return redirect("/")
