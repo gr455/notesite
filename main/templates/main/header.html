@@ -2,23 +2,23 @@
 	<head>
 		{% load static %}
 		<script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
-		<link href = "{% static 'thirdparty/materialize/css/materialize.css' %}" rel = "stylesheet">
+		<link href = "{% static 'thirdparty/materialize/css/materialize.css' %}" rel = "stylesheet" media="screen,projection">
 		<link href = "{% static 'style.css' %}" rel = "stylesheet">
 		<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
-
+		 <script src="https://code.jquery.com/jquery-3.2.1.min.js" type="text/javascript"></script>
 		<!-- Compiled and minified JavaScript -->
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/js/materialize.min.js"></script>
-		<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js">
+		<script>
 			$(document).ready(function(){
-    			$('.sidenav').sideNav();
+    			$('.sidenav').sidenav();
   			})
 		</script>
-			
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 	</head>
 
 	<body class = "body" style = "display: flex; min-height: 100vh; flex-direction: column;">
-		<div class="navbar-fixed">
+
 		{% if not logged_in %}
 			<nav class = "grey lighten-5" style = "position: fixed; z-index:999;">
 				<div class="nav-wrapper">
@@ -55,7 +55,6 @@
 				<li><a class="black-text" href="/">Home</a></li>
 				<li><a class="black-text" href="/logout">Logout</a></li>
 			</ul>
-		</div>
 
 		{% endif %}
 		{% if messages %}
@@ -101,11 +100,6 @@
 			</div>
 		  </div>
 		</footer>
-		<script  src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.4.1.min.js">
-			$(document).ready(function(){
-				$('.sidenav').sidenav();
-			});
-		</script>
 		
 	</body>
 </html>
