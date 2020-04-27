@@ -18,8 +18,8 @@
 	</head>
 
 	<body class = "body" style = "display: flex; min-height: 100vh; flex-direction: column;">
-
 		{% if not logged_in %}
+		<div class="navbar-fixed">
 			<nav class = "grey lighten-5" style = "position: fixed; z-index:999;">
 				<div class="nav-wrapper">
 					<a href="/" class="brand-logo black-text">Notesite</a>
@@ -31,12 +31,14 @@
 					</ul>
 				</div>
 			</nav>
+		</div>
 			<ul class="sidenav" id="mobile-demo">
 			    <li><a class="black-text" href="/login">Login</a></li>
 				<li><a class="black-text" href="/register">Register</a></li>
 				<li><a class="black-text" href="/">Home</a></li>
 			</ul>
 		{% else %}
+		<div class="navbar-fixed">
 			<nav class = "grey lighten-5">
 				<div class="nav-wrapper">
 					<a href="/" class="brand-logo black-text">Notesite</a>
@@ -49,6 +51,7 @@
 					</ul>
 				</div>
 			</nav>
+		</div>
 			<ul class="sidenav" id="mobile-demo">
 			    <li><a class="black-text" href="/users/{{request.user}}">{{request.user}}</a></li>
 				<li><a class="black-text" href="/create">Create</a></li> 
