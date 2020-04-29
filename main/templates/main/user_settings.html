@@ -1,0 +1,36 @@
+<html>
+	{% extends 'main/header.html'%}
+	<body>
+
+	{% block content %}
+
+	<h2>User settings</h2>
+	<br>
+
+	<form method = 'POST' action = '.' class="col s12" id="formsettings">
+	{% csrf_token %}
+	<input type="hidden" name="act" id="chnginp"/>
+	<ul class="collection">
+        <li class="collection-item">
+        	<a href="javascript:;" onclick="document.getElementById('chnginp').value = 'chname'; document.getElementById('formsettings').submit();" class="collection-item">Change Name<font style="color: gray" class="secondary-content">{{user.first_name}} {{user.last_name}}</font></a>
+        </li>
+        <li class="collection-item">
+        	<a href="javascript:;" onclick="document.getElementById('chnginp').value = 'chpass'; document.getElementById('formsettings').submit();" class="collection-item">Change Password</a>
+        </li>
+        <li class="collection-item">
+        	<a href="javascript:;" onclick="
+        	if(confirm('Are you sure you want to deactivate your account? There is no going back. Your notes will remain even after the account is deactivated')){
+        		if(confirm('Final confirmation. Your notes will remain, but your account will be deactivated')){
+		        	document.getElementById('chnginp').value = 'deac';
+		        	document.getElementById('formsettings').submit();
+	        	}
+        	}"
+        	class="collection-item" style = "color: red">Delete Account</a>
+        </li>
+    </ul>
+    </form>
+
+
+  {% endblock %}
+	</body>
+</html>

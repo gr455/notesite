@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseBadRequest
 from .models import *
 from django.contrib.auth.forms import AuthenticationForm
 from django import forms
@@ -15,6 +15,7 @@ from django.contrib.auth.tokens import default_token_generator
 from django.utils.http import urlsafe_base64_encode
 from django.utils.encoding import force_bytes
 from django.conf import settings
+from django.core.exceptions import SuspiciousOperation
 import os
 
 
@@ -231,7 +232,7 @@ def create(request):
 
 def view_user(request, uname):
 	if not request.user.is_authenticated:
-		raise PermissionDenied
+		pass
 
 	query_user = get_object_or_404(User, username = uname) 
 
@@ -244,7 +245,30 @@ def view_user(request, uname):
 
 	return render(request = request,
 				  template_name = "main/user.html",
-				  context = {"logged_in": True,
+				  context = {"logged_in": request.user.is_authenticated,
 				  			 "query_user": query_user,
 				  			 "curr_user_is_auth": user_is_authenticated,
 				  			 "notes": user_notes})
+
+def user_settings(request, uname):
+	if request.user.username != uname:
+		return PermissionDenied
+
+	user = request.user
+
+	if request.method == "POST":
+		action = request.POST.copy().get('act')
+		if action == "chname":
+			pass
+		elif action == "chpass":
+			pass
+		elif action == "deac":
+			return HttpResponse(200)
+		else:
+			return HttpResponseBadRequest("400 Bad Request")
+
+
+	return render(request = request,
+				  template_name = "main/user_settings.html",
+				  context = {"user": user,
+				  			 "logged_in": user.is_authenticated},)

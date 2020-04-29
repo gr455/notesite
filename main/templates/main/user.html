@@ -28,7 +28,10 @@
 					</div>
 		  		</a>
 		  	{% endfor %}
-		  </div>
+		</div>
+		{% if request.user == query_user %}
+			<p><a href = "/users/{{query_user}}/settings"><button type = "submit" class = "waves-effect waves-light btn" style = "background-color: teal">Account Settings</button></a></p>
+		{% endif %}
 
   {% endblock %}
 	</body>

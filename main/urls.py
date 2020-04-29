@@ -28,7 +28,10 @@ urlpatterns = [
 	path("login/", views.login_user, name = "login"),
     path("create/", views.create, name = "create"),
     path("users/", include([
-            path("<uname>/", views.view_user, name = "user")
+            path("<uname>/", include([
+                    path("", views.view_user, name = "user"),
+                    path("settings/", views.user_settings, name = "user-settings")
+                ]))
 
         ])),
     path('<var>/', include([
