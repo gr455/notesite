@@ -11,4 +11,4 @@
 6. run `python3 manage.py runserver` to start the server at localhost:8000
 
 
-The app is deployed at <a href = "gr455.pythonanywhere.com">gr455.pythonanywhere.com </a>
+The app is deployed at <a href = "http://gr455.pythonanywhere.com">gr455.pythonanywhere.com </a>
