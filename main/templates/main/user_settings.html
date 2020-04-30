@@ -38,9 +38,9 @@
         <form method = 'POST' action = './changename' class="col s12" id="formsettingsname">
             {% csrf_token %}
             <p style="color:gray">First Name</p>
-            <div class="row"><div class="col s3"><input name="fname" value = "{{user.first_name}}" id="fnamechange"/></div></div>
+            <div class="row"><div class="col s3"><input required="required" name="fname" value = "{{user.first_name}}" id="fnamechange"/></div></div>
             <p style="color:gray">Last Name</p>
-            <div class="row"><div class="col s3"><input name="lname" value = "{{user.last_name}}" id="lnamechange"/></div></div>
+            <div class="row"><div class="col s3"><input required="required" name="lname" value = "{{user.last_name}}" id="lnamechange"/></div></div>
 
             <button type="submit" class = "waves-effect waves-light btn">Save</button>
         </form>
