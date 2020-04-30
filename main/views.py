@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse, HttpResponseBadRequest
 from .models import *
-from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth.forms import AuthenticationForm, PasswordChangeForm
 from django import forms
 from django.contrib.auth import login, logout, authenticate
 from .forms import *
@@ -15,6 +15,7 @@ from django.contrib.auth.tokens import default_token_generator
 from django.utils.http import urlsafe_base64_encode
 from django.utils.encoding import force_bytes
 from django.conf import settings
+from django.contrib.auth import update_session_auth_hash
 from django.core.exceptions import SuspiciousOperation
 import os
 
@@ -165,7 +166,7 @@ def show(request, var, var2, var3):
 	note = get_object_or_404(Note, note_chapter = chapter, id = var3)
 	if request.method == 'POST':
 		if not request.user.username == note.note_author:
-			return PermissionDenied
+			raise PermissionDenied
 		else:
 			if os.path.isfile(os.path.join(settings.MEDIA_ROOT, note.note_fileurl.split('/')[-1])):
 				os.remove(os.path.join(settings.MEDIA_ROOT, note.note_fileurl.split('/')[-1]))
@@ -252,18 +253,18 @@ def view_user(request, uname):
 
 def user_settings(request, uname):
 	if request.user.username != uname:
-		return PermissionDenied
+		raise PermissionDenied
 
 	user = request.user
 
 	if request.method == "POST":
 		action = request.POST.copy().get('act')
 		if action == "chname":
-			pass
+			return redirect("./changename")
 		elif action == "chpass":
-			pass
+			return redirect("./changepass")
 		elif action == "deac":
-			return HttpResponse(200)
+			return deactivate_account(request, user)
 		else:
 			return HttpResponseBadRequest("400 Bad Request")
 
@@ -271,4 +272,59 @@ def user_settings(request, uname):
 	return render(request = request,
 				  template_name = "main/user_settings.html",
 				  context = {"user": user,
-				  			 "logged_in": user.is_authenticated},)
+				  			 "logged_in": user.is_authenticated,
+				  			 "type": None})
+
+def change_name(request, uname):
+	if request.user.username != uname :
+		raise PermissionDenied
+
+	user = request.user
+	if request.method == "POST" and (request.POST.get('fname') or request.POST.get('lname')):
+		data = request.POST.get('fname'), request.POST.get('lname') #tuple 0,1 fname,lname
+		user.first_name = data[0]
+		user.last_name = data[1]
+		user.save()
+		messages.success(request, f"Name changed")
+		return redirect(f"/users/{user.username}/settings/")
+
+	return render(request = request,
+				  template_name = "main/user_settings.html",
+				  context = {"user": user,
+				  			 "logged_in": user.is_authenticated,
+				  			 "type": "chname"})
+
+def change_pass(request, uname):
+	if request.user.username != uname:
+		raise PermissionDenied
+	err_msgs = None
+	user = request.user
+	if request.method == "POST":
+		info = PasswordChangeForm(request.user, request.POST)
+		if info.is_valid():
+			user = info.save()
+			update_session_auth_hash(request, user) #keep user logged in after passchange
+			messages.success(request, f"Password Updated")
+			return redirect(f"/users/{user.username}/settings/")
+		else:
+			err_msgs = info.errors.items
+
+	change_form = PasswordChangeForm(request.user)
+	return render(request = request,
+				  template_name = "main/user_settings.html",
+				  context = {"user": user,
+				  			 "logged_in": user.is_authenticated,
+				  			 "type": "chpass",
+				  			 "change_form": change_form, 
+				  			 "err_msgs": err_msgs})
+
+def deactivate_account(request, user):
+	if request.user.username != user.username:
+		raise PermissionDenied
+
+	user.is_active = False
+	logout(request)
+	messages.success(request, f"Account {user.username} deactivated")
+	user.save()
+	return redirect("/")
+	

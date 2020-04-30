@@ -30,6 +30,8 @@ urlpatterns = [
     path("users/", include([
             path("<uname>/", include([
                     path("", views.view_user, name = "user"),
+                    path("settings/changename", views.change_name, name = "change-name"),
+                    path("settings/changepass", views.change_pass, name = "change-password"),
                     path("settings/", views.user_settings, name = "user-settings")
                 ]))
 
