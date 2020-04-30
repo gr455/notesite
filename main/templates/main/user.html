@@ -5,7 +5,8 @@
 	{% block content %}
 
 	{% if query_user == request.user %}
-	<h2>Profile of {{query_user}} (You)</h2>
+	<h2>Profile of {{query_user}} (You) <a href = "/users/{{query_user}}/settings"><i class="medium material-icons" style="color:teal">edit</i></a></h2>
+
 	{% else %}
 	<h2>Profile of {{query_user}}</h2>
 	{% endif %}
@@ -29,9 +30,6 @@
 		  		</a>
 		  	{% endfor %}
 		</div>
-		{% if request.user == query_user %}
-			<p><a href = "/users/{{query_user}}/settings"><button type = "submit" class = "waves-effect waves-light btn" style = "background-color: teal">Account Settings</button></a></p>
-		{% endif %}
 
   {% endblock %}
 	</body>
