@@ -14,7 +14,7 @@
 		<p class="flow-text"><b>Name: </b>{{query_user.first_name}} {{query_user.last_name}}</p>
 		<p class="flow-text"><b>Email: </b>{{query_user.email}}</p>
 		<br>
-		<p class="flow-text"><b>Notes Contributed: </b>{{notes.count}}</p>
+		<p class="flow-text"><b>Notes Contributed: </b>{{total_notes}}</p>
 
 		<div class="row">
 			{% for note,likes in notes.items %}

@@ -33,7 +33,7 @@ def homepage(request):
 			  "courses": Course.objects.all,
 			  "logged_in": logged_in,
 			  "range": course_count }
-			  
+
 	return render(request = request,
 				  template_name = "main/index.html",
 				  context = params )
@@ -287,10 +287,12 @@ def view_user(request, uname):
 		fcount = Favourite.objects.filter(fav_note = note).count()
 		notes[note] = fcount
 
+	total_notes = len(notes.keys())
 	return render(request = request,
 				  template_name = "main/user.html",
 				  context = {"logged_in": request.user.is_authenticated,
 				  			 "query_user": query_user,
+				  			 "total_notes": total_notes,
 				  			 "curr_user_is_auth": user_is_authenticated,
 				  			 "notes": notes})
 
