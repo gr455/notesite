@@ -3,7 +3,7 @@
 	<body>
 
 	{% block content %}
-	<h2>{{note.note_title}}</h2>
+	<h2>{{note.note_title}} </h2>
 		<p class="flow-text"><b>Course: </b>{{course}}</p>
 		<p class="flow-text"><b>Chapter: </b> {{chapter.chapter_name}}</p>
 		<p class="flow-text" style = "width: 50%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"><b>Author: </b><a href ="/users/{{note.note_author}}">{{note.note_author}}</a></p>
@@ -14,11 +14,29 @@
 		<p class="flow-text"><b>Notes: </b> <a href= "{{note.note_fileurl}}"> Download (.{{file_type}})</a> </p>
 		{% endif %}
 		<br>
+
+		{% if logged_in %}
+			<form method="post" action="." id="like">
+				{% csrf_token %}
+				<input type="hidden" name="like" value="clicked" />
+				<p>
+				{% if liked %}
+					<a href = "javascript:;" id = "like_anchor" onclick="document.getElementById('like').submit();"><i class="small material-icons tooltipped" data-position="bottom" data-tooltip="Remove from favourites">favorite</i></a>
+				{% else %}
+					<a href = "javascript:;" id = "like_anchor" onclick="document.getElementById('like').submit();"><i class="small material-icons tooltipped" data-position="bottom" data-tooltip="Add to favourites">favorite_border</i></a>
+				{% endif %}
+				<font color = "gray">{{total_likes}}</font>
+				</p>
+			</form>
+		{% else %}
+		<p id = "like_anchor"><i class="small material-icons tooltipped" data-position="bottom" data-tooltip="Login to add to favourites">favorite_border</i><font color = "gray">{{total_likes}}</font></p>
+		{% endif %}
+
 		{% if note.note_author == request.user.username %}
 		<form method = 'POST' action = '.' class="col s12">
 			{% csrf_token %}
-			<p><button  onclick="return confirm('Are you sure you want to delete this note? You will not be able to recover the note again.')" type = "submit" class = "waves-effect waves-light btn" style = "background-color: red">Delete</button></p>
-		</form>
+			<p><button  onclick="return confirm('Are you sure you want to delete this note? You will not be able to recover the note again.')" type = "submit" class = "waves-effect waves-light btn" style = "background-color: red; margin-top: 7%">Delete</button> </p>
+		</form>  
 		{% endif %}
   {% endblock %}
 	</body>

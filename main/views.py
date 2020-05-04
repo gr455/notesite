@@ -26,12 +26,14 @@ def homepage(request):
 
 	if request.user.is_authenticated:
 		logged_in = True
+
 	params = {"notes": Note.objects.order_by('-note_whenPublished')[:6],
 			  "tutorials": Tutorial.objects.all,
 			  "chapters": Chapter.objects.all,
 			  "courses": Course.objects.all,
 			  "logged_in": logged_in,
 			  "range": course_count }
+			  
 	return render(request = request,
 				  template_name = "main/index.html",
 				  context = params )
@@ -147,7 +149,15 @@ def indirect_path(request, var, var2):
 		logged_in = True
 	course = get_object_or_404(Course, course_code = var)
 	chapter = get_object_or_404(Chapter, chapter_course = course, chapter_name = var2)
-	notes = Note.objects.filter(note_chapter = chapter)
+	notes_list = Note.objects.filter(note_chapter = chapter)
+	faves = []
+	notes = {}
+	for note in notes_list:
+		fcount = Favourite.objects.filter(fav_note = note).count()
+		notes[note] = fcount
+
+	#sorts by favourites
+	notes = {k: v for k, v in sorted(notes.items(), key=lambda x: x[1], reverse = True)}
 
 	return render(request = request,
 				  template_name = "main/notes.html",
@@ -159,20 +169,45 @@ def indirect_path(request, var, var2):
 
 def show(request, var, var2, var3):
 	logged_in = False
+	user = None
+	liked = False
 	if request.user.is_authenticated:
 		logged_in = True
+		user = request.user
+
 	course = get_object_or_404(Course, course_code = var)
 	chapter = get_object_or_404(Chapter, chapter_course = course, chapter_name = var2)
 	note = get_object_or_404(Note, note_chapter = chapter, id = var3)
+
+	if user:
+		liked = Favourite.objects.filter(fav_user = user, fav_note = note)
+	total_likes = len(Favourite.objects.filter(fav_note = note))
+
 	if request.method == 'POST':
-		if not request.user.username == note.note_author:
-			raise PermissionDenied
+		if request.POST.get('like'):
+			if user:
+				is_liked = Favourite.objects.filter(fav_user = user, fav_note = note)
+				if is_liked:
+					is_liked.delete()
+					messages.success(request, f"Removed from favourites")
+				else:
+					new_fav = Favourite.objects.create(fav_user = user,fav_note = note)
+					new_fav.save()
+					messages.success(request, f"Added to favourites")
+
+				return redirect(".")
+			else:
+				raise PermissionDenied
 		else:
-			if os.path.isfile(os.path.join(settings.MEDIA_ROOT, note.note_fileurl.split('/')[-1])):
-				os.remove(os.path.join(settings.MEDIA_ROOT, note.note_fileurl.split('/')[-1]))
-			note.delete()
-			messages.success(request, f"Note Deleted")
-			return redirect("/")
+			if not request.user.username == note.note_author:
+				raise PermissionDenied
+			else:
+				#remove referenced file
+				if os.path.isfile(os.path.join(settings.MEDIA_ROOT, note.note_fileurl.split('/')[-1])):
+					os.remove(os.path.join(settings.MEDIA_ROOT, note.note_fileurl.split('/')[-1]))
+				note.delete()
+				messages.success(request, f"Note Deleted")
+				return redirect("/")
 
 
 	return render(request = request,
@@ -181,6 +216,8 @@ def show(request, var, var2, var3):
 				  			 "chapter": chapter,
 				  			 "note": note,
 				  			 "file_type": note.note_fileurl.split('.')[-1],
+				  			 "liked": liked,
+				  			 "total_likes":total_likes,
 				  			 "logged_in": logged_in})
 
 def open_document(request, var, var2, var3):
@@ -205,6 +242,7 @@ def create(request):
 		if request_file:
 			if request_file.name.split('.')[-1] in permitted_extensions and request_file.size <= 5242880:
 
+				#save attatched file
 				fs = FileSystemStorage()
 				file = fs.save(request_file.name, request_file)
 				fileurl = fs.url(file)
@@ -242,14 +280,43 @@ def view_user(request, uname):
 	if curr_user.username == uname:
 		user_is_authenticated = True
 
-	user_notes = Note.objects.filter(note_author = uname)
+	notes_list = Note.objects.filter(note_author = uname)
+	faves = []
+	notes = {}
+	for note in notes_list:
+		fcount = Favourite.objects.filter(fav_note = note).count()
+		notes[note] = fcount
 
 	return render(request = request,
 				  template_name = "main/user.html",
 				  context = {"logged_in": request.user.is_authenticated,
 				  			 "query_user": query_user,
 				  			 "curr_user_is_auth": user_is_authenticated,
-				  			 "notes": user_notes})
+				  			 "notes": notes})
+
+
+def view_favourites(request):
+	if not request.user.is_authenticated:
+		raise PermissionDenied
+
+	logged_in = True
+	user = request.user
+	faves = Favourite.objects.filter(fav_user = user)
+	notes = {}
+	for fav in faves:
+		likes_for_note = Favourite.objects.filter(fav_note = fav.fav_note).count()
+		notes[fav.fav_note] = likes_for_note
+
+	note_count = len(notes)
+
+	return render(request = request,
+				  template_name = "main/favourites.html",
+				  context = {"logged_in": logged_in,
+				  			 "notes": notes,
+				  			 "faves": faves,
+				  			 "note_count": note_count,
+				  			 "user": user})
+
 
 def user_settings(request, uname):
 	if request.user.username != uname:
@@ -275,6 +342,7 @@ def user_settings(request, uname):
 				  			 "logged_in": user.is_authenticated,
 				  			 "type": None})
 
+
 def change_name(request, uname):
 	if request.user.username != uname :
 		raise PermissionDenied
@@ -294,6 +362,7 @@ def change_name(request, uname):
 				  			 "logged_in": user.is_authenticated,
 				  			 "type": "chname"})
 
+
 def change_pass(request, uname):
 	if request.user.username != uname:
 		raise PermissionDenied
@@ -301,6 +370,7 @@ def change_pass(request, uname):
 	user = request.user
 	if request.method == "POST":
 		info = PasswordChangeForm(request.user, request.POST)
+
 		if info.is_valid():
 			user = info.save()
 			update_session_auth_hash(request, user) #keep user logged in after passchange
@@ -318,6 +388,7 @@ def change_pass(request, uname):
 				  			 "change_form": change_form, 
 				  			 "err_msgs": err_msgs})
 
+
 def deactivate_account(request, user):
 	if request.user.username != user.username:
 		raise PermissionDenied
@@ -327,4 +398,3 @@ def deactivate_account(request, user):
 	messages.success(request, f"Account {user.username} deactivated")
 	user.save()
 	return redirect("/")
-	

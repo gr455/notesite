@@ -1,0 +1,42 @@
+<html>
+	{% extends 'main/header.html'%}
+	<body>
+
+	{% block content %}
+	
+	<h2>Your Favourites </h2>
+	<br>
+	<h4> Showing {{note_count}} note(s)</h4>
+	{% if not notes %}
+		<h4 style = "color: gray">You don't have any favourites yet</h4>
+	{% else %}
+		<div class="row">
+			<div class="row">
+			{% for note,likes in notes.items %}
+				<a href  = "/{{note.note_chapter.chapter_course.course_code}}/{{note.note_chapter.chapter_name}}/{{note.id}}">
+					<div class="col s12 m6">
+					  <div class="card blue darken-1">
+						<div class="card-content white-text">
+						  <span class="card-title" style = "overflow: hidden; display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical;">{{note.note_title}}</span>
+						  <p> {{note.note_chapter.chapter_course}} : {{note.note_chapter.chapter_name}}</p>
+						</div>
+						<div class="card-content white-text" stye = "color: white;">
+							<a style = "color: white;" href="/users/{{note.note_author}}">
+								by {{note.note_author}}
+							</a>
+							<br><br>
+							<p>Published on {{note.note_whenPublished}}
+								<div style = "float: right; color: white;"><i class="tiny material-icons tooltipped" data-position="bottom" data-tooltip="Remove from favourites" >favorite</i><font color="white">{{likes}}</font></div></p>
+						</div>
+					  </div>
+					</div>
+		  		</a>
+		  	{% endfor %}
+		  </div>
+		</div>
+	{% endif %}
+
+  {% endblock %}
+	</body>
+</html>
+

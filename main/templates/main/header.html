@@ -14,6 +14,11 @@
     			$('.sidenav').sidenav();
   			})
 		</script>
+		<script>
+			$(document).ready(function(){
+    			$('.tooltipped').tooltip();
+  			});
+		</script>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 	</head>
 
@@ -45,7 +50,8 @@
 					<a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons" style = "color: black;">menu</i></a>
 					<ul id="nav-mobile" class="right hide-on-med-and-down" >
 						<li><a class="black-text" href="/users/{{request.user}}">{{request.user}}</a></li>
-						<li><a class="black-text" href="/create">Create</a></li> 
+						<li><a class="black-text" href="/create">Create</a></li>
+						<li><a class="black-text" href="/favourites">Favourites</a></li> 
 						<li><a class="black-text" href="/">Home</a></li>
 						<li><a class="black-text" href="/logout">Logout</a></li>
 					</ul>
@@ -55,6 +61,7 @@
 			<ul class="sidenav" id="mobile-demo">
 			    <li><a class="black-text" href="/users/{{request.user}}">{{request.user}}</a></li>
 				<li><a class="black-text" href="/create">Create</a></li> 
+				<li><a class="black-text" href="/favourites">Favourites</a></li> 
 				<li><a class="black-text" href="/">Home</a></li>
 				<li><a class="black-text" href="/logout">Logout</a></li>
 			</ul>

@@ -1,4 +1,5 @@
 from django.contrib.auth.models import User
+from django.contrib.contenttypes.fields import GenericRelation
 from django.db import models
 import django.utils
 
@@ -35,6 +36,10 @@ class Note(models.Model):
 	def __str__(self):
 		return str(self.id) +" "+ self.note_title
 
+	@property
+	def getFavCount(self):
+		return Favourite.objects.filter(fav_note = self).count()
+
 class Tutorial(models.Model):
 	tutorial_title = models.CharField(max_length = 200)
 	tutorial_content = models.TextField()
@@ -44,3 +49,12 @@ class Tutorial(models.Model):
 										 verbose_name = "Chapter",
 										 on_delete = models.CASCADE)
 
+class Favourite(models.Model):
+	fav_user = models.ForeignKey(User,
+								 default = 0,
+								 verbose_name = "Favourite",
+								 on_delete = models.CASCADE)
+	fav_note = models.ForeignKey(Note,
+								 default = 0,
+								 verbose_name = "Note",
+								 on_delete = models.CASCADE)
