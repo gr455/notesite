@@ -12,3 +12,5 @@
 
 
 The app is deployed at <a href = "http://gr455.pythonanywhere.com">gr455.pythonanywhere.com </a>
+
+Note that the e-mail feature will not work in your local fork.
