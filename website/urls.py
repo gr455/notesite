@@ -27,7 +27,6 @@ from django.conf.urls.static import static
 urlpatterns = [
 	path('admin/', admin.site.urls),
     # url(r'^attachments/', include('attachments.urls', namespace='attachments'))
-    path('tinymce/', include('tinymce.urls')),
 
 ]
 

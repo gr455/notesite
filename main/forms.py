@@ -3,7 +3,6 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User, AbstractBaseUser
 from django.db.models import UniqueConstraint
 from .models import *
-from tinymce.widgets import TinyMCE
 
 class NewUserForm(UserCreationForm):
 
