@@ -17,11 +17,15 @@
 
 1. install Docker
 
-2. run `docker build -t notesite .`
+2. go to 'website/settings.py' and change `DEBUG` to True
 
-3. run `docker run -it -p 8000:8000 notesite`
+3. go to 'website/settings.py' and change `SECRET_KEY` to any string of significant length
 
-4. the server will start at localhost:8000
+4. run `docker build -t notesite .`
+
+5. run `docker run -it -p 8000:8000 notesite`
+
+6. the server will start at localhost:8000
 
 
 The app is deployed at <a href = "http://gr455.pythonanywhere.com">gr455.pythonanywhere.com </a>
